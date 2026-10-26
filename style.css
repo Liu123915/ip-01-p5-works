@@ -25,6 +25,20 @@ body.static-page {
 /* 动态作品页：画布铺满整个窗口，禁止滚动条 */
 body.dynamic-page {
   overflow: hidden;
+  background: #ffffff; /* 运动轨迹是白底作品，页面底色也跟着变白，避免边缘露出黑边 */
+}
+
+/* 白底页面上的返回按钮：换成深色描边，保证看得清 */
+body.dynamic-page .back-link {
+  border-color: rgba(20, 20, 22, 0.16);
+  background: rgba(255, 255, 255, 0.78);
+  color: #141416;
+}
+
+body.dynamic-page .back-link:hover {
+  background: rgba(232, 74, 22, 0.92);
+  border-color: rgba(232, 74, 22, 0.92);
+  color: #fff;
 }
 
 /* 画布本身去掉行内元素的底部空隙，避免出现莫名滚动条 */
