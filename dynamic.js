@@ -38,7 +38,8 @@ function draw() {
     const bubble = bubbles[i];
 
     // 逐渐变淡，淡到 0 就回收，避免越积越多导致掉帧
-    bubble.alpha -= 0.45;
+    // 演示模式（?demo=1）下褪色放慢，投屏 / 截图时轨迹能留住
+    bubble.alpha -= demoMode ? 0.1 : 0.45;
     if (bubble.alpha <= 0) {
       bubbles.splice(i, 1);
       continue;
