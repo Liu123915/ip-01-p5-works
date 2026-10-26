@@ -23,9 +23,11 @@ function setup() {
   pixelDensity(Math.min(2, displayDensity()));
   background(255);
   noStroke();
+  setupDemo();
 }
 
 function draw() {
+  updateDemo();
   // 白底每帧只盖 12% 的透明度：旧泡泡不会一下子消失，而是慢慢褪成一道轨迹
   background(255, 255, 255, 12);
 
@@ -111,4 +113,35 @@ function drawHUD() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   background(255);
+}
+
+/* ---------- 演示模式：网址带 ?demo=1 时，自动沿一条漫游路径落泡泡 ----------
+   用途：投屏演示、截图、无人操作时也能看到画面动起来 */
+let demoMode = false;
+let demoX = 0, demoY = 0, demoAngle = 0, demoTick = 0;
+
+function setupDemo() {
+  demoMode = location.search.indexOf("demo") > -1;
+  demoX = width * 0.3;
+  demoY = height * 0.45;
+}
+
+function updateDemo() {
+  if (!demoMode) return;
+  demoTick++;
+  if (demoTick % 4 === 0) {
+    // 随机游走：慢慢转弯，轨迹像一条柔和的曲线
+    demoAngle += random(-0.35, 0.35);
+    demoX += cos(demoAngle) * 26;
+    demoY += sin(demoAngle) * 26;
+    // 走出画面就回到中间
+    if (demoX < 60 || demoX > width - 60 || demoY < 60 || demoY > height - 60) {
+      demoX = width * 0.5;
+      demoY = height * 0.5;
+      demoAngle = random(TWO_PI);
+    }
+    scatterBubbles(demoX, demoY, 2, 50, 140);
+    // 偶尔来一次爆发，画面更有节奏
+    if (demoTick % 120 === 0) scatterBubbles(demoX, demoY, 6, 90, 200);
+  }
 }
