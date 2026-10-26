@@ -124,6 +124,21 @@ function setupDemo() {
   demoMode = location.search.indexOf("demo") > -1;
   demoX = width * 0.3;
   demoY = height * 0.45;
+  if (demoMode) {
+    // 开场先沿一条随机游走曲线铺好一整条轨迹，第一眼就有画面
+    let px = width * 0.28, py = height * 0.4, angle = 0;
+    for (let i = 0; i < 170; i++) {
+      angle += random(-0.32, 0.32);
+      px += cos(angle) * 18;
+      py += sin(angle) * 18;
+      if (px < 80 || px > width - 80 || py < 80 || py > height - 80) {
+        px = random(width * 0.2, width * 0.8);
+        py = random(height * 0.2, height * 0.8);
+        angle = random(TWO_PI);
+      }
+      scatterBubbles(px, py, 1, 46, 130);
+    }
+  }
 }
 
 function updateDemo() {
