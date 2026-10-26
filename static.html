@@ -11,5 +11,11 @@
   </head>
   <body class="static-page">
     <a class="back-link" href="./index.html">← 返回索引</a>
+    <script>
+      // 被作品集用 iframe 内嵌时（地址带 ?embed=1），隐藏"返回索引"，避免访客误点
+      if (location.search.indexOf("embed") > -1) {
+        document.querySelector(".back-link").style.display = "none";
+      }
+    </script>
   </body>
 </html>
