@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ip-01-p5-works · 刘晓茹</title>
+    <style>
+      /* ---------- 索引页样式（只有这一页用，所以写在页面里） ---------- */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background: #141416;
+        background-image: radial-gradient(circle at 78% 12%, rgba(96, 136, 168, 0.22), transparent 55%),
+          radial-gradient(circle at 12% 88%, rgba(232, 74, 22, 0.18), transparent 50%);
+        color: #f2ead2;
+        font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 20px;
+        box-sizing: border-box;
+      }
+
+      .wrap {
+        width: 100%;
+        max-width: 880px;
+      }
+
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: #f6bc48;
+        margin: 0 0 14px;
+      }
+
+      h1 {
+        font-size: 42px;
+        line-height: 1.16;
+        margin: 0 0 12px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      h1 span {
+        color: #e84a16;
+      }
+
+      .lede {
+        margin: 0 0 34px;
+        font-size: 15px;
+        line-height: 1.8;
+        color: rgba(242, 234, 210, 0.62);
+        max-width: 560px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        position: relative;
+        display: block;
+        padding: 26px 24px 22px;
+        border: 1px solid rgba(242, 234, 210, 0.16);
+        border-radius: 18px;
+        background: rgba(242, 234, 210, 0.035);
+        color: inherit;
+        text-decoration: none;
+        overflow: hidden;
+        transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(232, 74, 22, 0.75);
+        background: rgba(232, 74, 22, 0.09);
+      }
+
+      .card .index {
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        color: rgba(242, 234, 210, 0.4);
+      }
+
+      .card h2 {
+        margin: 10px 0 6px;
+        font-size: 23px;
+        font-weight: 600;
+      }
+
+      .card p {
+        margin: 0;
+        font-size: 13.5px;
+        line-height: 1.75;
+        color: rgba(242, 234, 210, 0.6);
+      }
+
+      .card .go {
+        margin-top: 18px;
+        font-size: 13px;
+        color: #f6bc48;
+      }
+
+      footer {
+        margin-top: 34px;
+        font-size: 12.5px;
+        line-height: 1.9;
+        color: rgba(242, 234, 210, 0.34);
+      }
+
+      footer code {
+        color: rgba(242, 234, 210, 0.55);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="eyebrow">Interactive Programming · Assignment 01</p>
+      <h1>创意代码的<span>基本原理</span></h1>
+      <p class="lede">
+        刘晓茹 · 数字媒体艺术。两个用 p5.js 写的构成练习：一个只用形状与颜色静置成画面，一个让形状在时间和交互里留下轨迹。
+      </p>
+
+      <div class="cards">
+        <a class="card" href="./static.html">
+          <div class="index">01 / STATIC</div>
+          <h2>几何构成</h2>
+          <p>只使用形状、颜色、位置，不写 draw() 循环，画面在 setup() 里一次画完。用 for 循环生成渐大渐低的圆，形成节奏。</p>
+          <div class="go">打开作品 →</div>
+        </a>
+
+        <a class="card" href="./dynamic.html">
+          <div class="index">02 / DYNAMIC</div>
+          <h2>运动轨迹</h2>
+          <p>有 draw() 循环的交互作品：粒子被鼠标牵引、被点击炸开，轨迹在画面上留下余晖。支持空格切换吸引/排斥、R 重置。</p>
+          <div class="go">打开作品 →</div>
+        </a>
+      </div>
+
+      <footer>
+        技术：p5.js 2.3.1（已本地化，不依赖 CDN） ·
+        配色控制在 5 色以内：米白 / 墨黑 / 灰蓝 / 橘红 / 明黄
+        <br />
+        源码结构：<code>index.html</code> 索引 · <code>static.html + static.js</code> ·
+        <code>dynamic.html + dynamic.js</code>
+      </footer>
+    </div>
+  </body>
+</html>

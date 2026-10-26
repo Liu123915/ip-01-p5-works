@@ -1,0 +1,56 @@
+/* ============================================================
+   作业一 · p5.js 两个作品 公共样式
+   目标：画布打开不出现滚动条、不出现错位
+   ============================================================ */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #141416;            /* 与作品配色里的“墨黑”一致 */
+  color: #f2ead2;                 /* 与作品配色里的“米白”一致 */
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 静态作品页：画布居中，四周留白，禁止滚动条 */
+body.static-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 动态作品页：画布铺满整个窗口，禁止滚动条 */
+body.dynamic-page {
+  overflow: hidden;
+}
+
+/* 画布本身去掉行内元素的底部空隙，避免出现莫名滚动条 */
+canvas {
+  display: block;
+}
+
+/* 左上角返回索引的小按钮（两个作品页通用） */
+.back-link {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  padding: 7px 14px;
+  border: 1px solid rgba(242, 234, 210, 0.35);
+  border-radius: 999px;
+  background: rgba(20, 20, 22, 0.55);
+  color: #f2ead2;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.back-link:hover {
+  background: rgba(232, 74, 22, 0.85);
+  border-color: rgba(232, 74, 22, 0.9);
+}
