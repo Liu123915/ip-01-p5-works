@@ -42,8 +42,8 @@ function draw() {
     const bubble = bubbles[i];
 
     // 逐渐变淡，淡到 0 就回收
-    // 演示模式（?demo=1）下褪色更慢，投屏 / 截图时轨迹能留住
-    bubble.alpha -= demoMode ? 0.0018 : 0.005;
+    // 演示模式（?demo=1）下稍慢一点，投屏 / 截图时轨迹能留住
+    bubble.alpha -= demoMode ? 0.005 : 0.014;
     if (bubble.alpha <= 0) {
       bubbles.splice(i, 1);
       continue;
@@ -58,66 +58,62 @@ function draw() {
   drawHUD();
 }
 
-/* ---------- 立体泡泡：径向渐变球体 + 折射细边 + 高光弧 ---------- */
+/* ---------- 立体泡泡：柔和渐变 + 淡淡的边 + 一点高光（v3：收敛版） ---------- */
 function drawBubble(b) {
   const r = b.r * b.breath;
   const c = b.col;
   const a = constrain(b.alpha, 0, 1);
-  // 同色加深：模拟泡泡边缘的折射，颜色深一点但仍是本来的色相
-  const deep = [c[0] * 0.74, c[1] * 0.74, c[2] * 0.74];
+  const deep = [c[0] * 0.86, c[1] * 0.86, c[2] * 0.86];
   const rgba = (col, alpha) =>
     `rgba(${col[0] | 0},${col[1] | 0},${col[2] | 0},${alpha.toFixed(3)})`;
 
-  // 1) 球体：径向渐变的圆心偏向左上（受光方向）
-  //    中心薄而透 → 主体淡彩 → 边缘最深，泡泡的体积感就来自这个梯度
+  // 球体渐变：整体更淡更透，边缘只比中心深一档，不再压出重色环
   const grad = drawingContext.createRadialGradient(
-    b.x - r * 0.32, b.y - r * 0.32, r * 0.05,
+    b.x - r * 0.28, b.y - r * 0.28, r * 0.1,
     b.x, b.y, r
   );
-  grad.addColorStop(0, rgba(c, a * 0.16));   // 受光面：几乎透到纸面
-  grad.addColorStop(0.62, rgba(c, a * 0.42)); // 主体
-  grad.addColorStop(0.88, rgba(c, a * 0.66)); // 靠边开始变浓
-  grad.addColorStop(1, rgba(deep, a * 0.9));  // 边缘折射最深
+  grad.addColorStop(0, rgba(c, a * 0.1));    // 受光面：几乎透
+  grad.addColorStop(0.6, rgba(c, a * 0.3));  // 主体淡彩
+  grad.addColorStop(0.9, rgba(c, a * 0.45)); // 靠边微浓
+  grad.addColorStop(1, rgba(deep, a * 0.55)); // 边缘轻收，不抢戏
   drawingContext.fillStyle = grad;
   drawingContext.beginPath();
   drawingContext.arc(b.x, b.y, r, 0, TWO_PI);
   drawingContext.fill();
 
-  // 2) 折射细边：勾出泡泡的薄膜轮廓
-  drawingContext.strokeStyle = rgba(deep, a * 0.75);
-  drawingContext.lineWidth = Math.max(1, r * 0.028);
+  // 极细的淡边，只给轮廓一点存在感
+  drawingContext.strokeStyle = rgba(deep, a * 0.35);
+  drawingContext.lineWidth = Math.max(1, r * 0.018);
   drawingContext.beginPath();
   drawingContext.arc(b.x, b.y, r - 0.5, 0, TWO_PI);
   drawingContext.stroke();
 
-  // 3) 高光弧：左上方一小段白弧，泡泡"有光"的关键
-  drawingContext.strokeStyle = `rgba(255,255,255,${(a * 0.85).toFixed(3)})`;
-  drawingContext.lineWidth = Math.max(1.5, r * 0.05);
-  drawingContext.lineCap = "round";
+  // 高光：左上一个小圆点 + 极淡短弧，点到为止
+  drawingContext.fillStyle = `rgba(255,255,255,${(a * 0.6).toFixed(3)})`;
   drawingContext.beginPath();
-  drawingContext.arc(b.x, b.y, r * 0.72, PI * 1.05, PI * 1.45);
-  drawingContext.stroke();
+  drawingContext.arc(b.x - r * 0.34, b.y - r * 0.36, r * 0.1, 0, TWO_PI);
+  drawingContext.fill();
 }
 
 /* ---------- 交互 1：移动就落下泡泡（鼠标 / 手指通用） ---------- */
 function mouseMoved() {
-  scatterBubbles(mouseX, mouseY, 1, 44, 120);
+  scatterBubbles(mouseX, mouseY, 1, 30, 78);
   return false;
 }
 
 function touchMoved() {
-  scatterBubbles(mouseX, mouseY, 1, 44, 120);
+  scatterBubbles(mouseX, mouseY, 1, 30, 78);
   return false;
 }
 
 /* ---------- 交互 2：点击 / 轻触，原地爆发一圈更大的泡泡 ---------- */
 function mousePressed() {
-  scatterBubbles(mouseX, mouseY, 8, 90, 220);
+  scatterBubbles(mouseX, mouseY, 7, 60, 140);
   return false;
 }
 
 function touchStarted() {
-  scatterBubbles(mouseX, mouseY, 8, 90, 220);
+  scatterBubbles(mouseX, mouseY, 7, 60, 140);
   return false;
 }
 
@@ -185,7 +181,7 @@ function setupDemo() {
         py = random(height * 0.2, height * 0.8);
         angle = random(TWO_PI);
       }
-      scatterBubbles(px, py, 1, 46, 130);
+      scatterBubbles(px, py, 1, 36, 92);
     }
   }
 }
@@ -204,8 +200,8 @@ function updateDemo() {
       demoY = height * 0.5;
       demoAngle = random(TWO_PI);
     }
-    scatterBubbles(demoX, demoY, 2, 50, 140);
+    scatterBubbles(demoX, demoY, 2, 36, 96);
     // 偶尔来一次爆发，画面更有节奏
-    if (demoTick % 120 === 0) scatterBubbles(demoX, demoY, 6, 90, 200);
+    if (demoTick % 120 === 0) scatterBubbles(demoX, demoY, 5, 60, 130);
   }
 }
